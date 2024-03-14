@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { Container, Card, Form, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
-import axios from 'axios'; // Import Axios for making HTTP requests
+// LoginForm.js
+import axios from "axios";
+import React, { useState } from "react";
+import { Button, Card, Container, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  const navigate = useNavigate(); // Change Navigate to navigate
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,24 +22,27 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Send formData to Node.js API for login
-      const response = await axios.post('http://localhost:5000/login', formData);
-      console.log(response.data); // Log response from the server
-
-      // Assuming you receive the user data upon successful login
+      const response = await axios.post("http://localhost:5000/login", formData);
       const userData = response.data.user;
-
-      // Redirect to the table route and pass the user data as props
-      navigate('/table', { state: { userData } }); // Change Navigate.push to navigate
+      localStorage.setItem("user", JSON.stringify(userData));
+      console.log("Redirecting to /table");
+      navigate("/table");
     } catch (error) {
-      console.error('Login failed:', error);
-      // Handle login failure, display an error message, etc.
+      console.error("Login failed:", error);
     }
   };
+  
 
   return (
-    <div style={{ backgroundColor: 'skyblue', minHeight: '100vh' }}>
-      <Container className="mt-4" style={{ backgroundColor: 'gray', padding: '20px', borderRadius: '5px' }}>
+    <div style={{ backgroundColor: "skyblue", minHeight: "100vh" }}>
+      <Container
+        className="mt-4"
+        style={{
+          backgroundColor: "gray",
+          padding: "20px",
+          borderRadius: "5px",
+        }}
+      >
         <Card>
           <Card.Body>
             <Form onSubmit={handleSubmit}>
@@ -62,7 +66,11 @@ const LoginForm = () => {
                   required
                 />
               </Form.Group>
-              <Button variant="primary" type="submit" style={{ backgroundColor: 'lightskyblue' }}>
+              <Button
+                variant="primary"
+                type="submit"
+                style={{ backgroundColor: "lightskyblue" }}
+              >
                 Login
               </Button>
             </Form>

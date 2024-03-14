@@ -1,24 +1,23 @@
+// StaticTable.js
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
-import axios from 'axios'; // Import Axios for making HTTP requests
+import axios from 'axios';
 
-const StaticTable = ({ userData }) => {
-  const [data, setData] = useState([]);
+const StaticTable = () => {
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUsers = async () => {
       try {
-        // Fetch data from the "/data" endpoint
         const response = await axios.get('http://localhost:5000/users');
-        setData(response.data);
+        setUsers(response.data); // Assuming response.data is an array of user objects
       } catch (error) {
-        console.error('Error fetching data:', error);
-        // Handle error, display an error message, etc.
+        console.error('Error fetching users:', error);
       }
     };
 
-    fetchData();
-  }, []); // Run once on component mount
+    fetchUsers();
+  }, []);
 
   return (
     <div className="table-responsive">
@@ -31,11 +30,11 @@ const StaticTable = ({ userData }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {users.map((user, index) => (
             <tr key={index}>
-              <td>{item.id}</td>
-              <td>{item.name}</td>
-              <td>{item.email}</td>
+              <td>{user.id}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
             </tr>
           ))}
         </tbody>
